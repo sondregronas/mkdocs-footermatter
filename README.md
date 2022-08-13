@@ -11,7 +11,7 @@ This solves a problem I had when batch renaming every file inside a GitHub actio
 
 Can be used in conjunction with the Obsidian plug-in https://github.com/beaussan/update-time-on-edit-obsidian
 
-For now it is installed using `pip install git+https://github.com/sondregronas/mkdocs-footermatter`
+For now it is installed using `pip install git+https://github.com/sondregronas/mkdocs-footermatter@main`
 
 ## Usage
 ```yaml
