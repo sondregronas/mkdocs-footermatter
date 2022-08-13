@@ -5,6 +5,13 @@ from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 
 
+class Author:
+    def __init__(self, name, img, url):
+        self.name = name
+        self.img = img
+        self.url = url
+
+
 class FootermatterPlugin(BasePlugin):
     config_scheme = (
         ('key_authors', config_options.Type(str, default='authors')),
@@ -31,7 +38,7 @@ class FootermatterPlugin(BasePlugin):
 
         for author in self.config.get('author_map'):
             key, img, url = author.split(self.config.get('separator_map'))
-            self.author_map[key.strip()] = [key.strip(), img.strip(), url.strip()]
+            self.author_map[key.strip()] = Author(key.strip(), img.strip(), url.strip())
 
     def on_page_context(self, context, page, config, nav):
         a = page.meta.get(self.config.get("key_authors"))
