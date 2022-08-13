@@ -31,8 +31,8 @@ aliases: [Home,]
 authors:
   - Firstname Lastname
   - Author2
-created: 2022-04-09
-updated: 2022-08-13
+created: 2022-04-09 08:52:19
+updated: 2022-08-13 12:18:05
 ---
 # Homepage
 Alternatively:
