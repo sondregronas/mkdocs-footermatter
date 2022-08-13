@@ -37,58 +37,20 @@ class FootermatterPlugin(BasePlugin):
             self.author_map[key.strip()] = [key.strip(), img.strip(), url.strip()]
 
     def on_page_markdown(self, markdown, page, config, files):
-        if not markdown.startswith('---'):
+        a = page.meta.get(self.config.get("key_authors"))
+        c = page.meta.get(self.config.get("key_created"))
+        u = page.meta.get(self.config.get("key_updated"))
+        if not a or not c or not u:
             return markdown
-        frontmatter = markdown.split('---')[1]
-
-        self.data['authors'] = extract_authors(self.config.get("key_authors"), frontmatter)
-        if not self.data.get('authors'):
-            return markdown
-
-        for line in frontmatter.split('\n'):
-            created = re.match(self.config.get("key_created") + r': *(.+)', line)
-            updated = re.match(self.config.get("key_updated") + r': *(.+)', line)
-            if created:
-                self.data['created'] = readable_date(created.group(1).strip(), self.config['locale'])
-            elif updated:
-                self.data['updated'] = readable_date(updated.group(1).strip(), self.config['locale'])
+        locale, now = self.config.get('locale'), datetime.now()
+        self.data['authors'] = a if isinstance(a, list) else [a]
+        self.data['created'] = timeago.format(c, now, locale)
+        self.data['updated'] = timeago.format(u, now, locale)
 
     def on_page_context(self, context, page, config, nav):
         if not self.data.get('authors') or not self.data.get('updated') or not self.data.get('created'):
             return context
         context['footermatter_authors'] = [self.author_map.get(author) for author in self.data.get('authors')]
-        context['footermatter_created'] = self.data.get('created', '')
-        context['footermatter_updated'] = self.data.get('updated', '')
+        context['footermatter_created'] = self.data.get('created')
+        context['footermatter_updated'] = self.data.get('updated')
         return context
-
-
-def readable_date(date, locale) -> str:
-    return timeago.format(parser.parse(date), datetime.now(), locale)
-
-
-def extract_authors(key, frontmatter) -> list:
-    out = list()
-    is_list = False
-    for line in frontmatter.split('\n'):
-        # read authors: Firstname Lastname
-        single_author = re.match(key + r': *(\w.+)', line)
-        if single_author:
-            return [single_author.group(1)]
-
-        # read authors: [Firstname Lastname, Firstname2 Lastname2]
-        authors_bracket = re.match(key + r': *\[(.+)\]', line)
-        if authors_bracket:
-            return [author.strip() for author in authors_bracket.group(1).split(',')]
-
-        # read authors:
-        #       - firstname lastname
-        #       - firstname2 lastname2
-        elif re.match(key + r': *$', line):
-            is_list = True
-        elif is_list and not line.strip().startswith('-'):
-            is_list = False
-        elif is_list:
-            author = line.split('-')[1].strip()
-            if author:
-                out += [author]
-    return out
