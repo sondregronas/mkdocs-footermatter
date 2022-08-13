@@ -1,7 +1,5 @@
-import re
 import timeago
 from datetime import datetime
-from dateutil import parser
 
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
