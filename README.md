@@ -94,6 +94,7 @@ Relevant attributes:
     color: var(--md-default-fg-color--light);
     padding-top: 1ch;
 }
+
 .footermatter-authors img{
     border-radius:100%;
     width:1.75rem;
