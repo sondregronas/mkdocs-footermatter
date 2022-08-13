@@ -49,6 +49,8 @@ While there's not much customizability (in fact there is none), here is a list o
 - `locale` ISO language code (derived from theme language/locale), fallbacks to `en`
 - `author_map` List of authors with attribute values: `name | img (path relative to "custom_dir") | url`
 - `separator_map` separator for `author_map`. Default `|`
+- `default_contrib_img` fallback image if missing from `author_map`. Default `None`
+- `default_contrib_url` fallback url if missing from `author_map`. Default: `/`
 
 ### Template
 ```html
@@ -67,8 +69,10 @@ While there's not much customizability (in fact there is none), here is a list o
       <span class="footermatter-text">GitHub</span>
       <span class="footermatter-authors">
       {%- for author in footermatter_authors -%}
+          {% if author.img %}
           <a href="{{ author.url }}" title="{{ author.name }}" target="_blank">
           <img class="footermatter-author" src="{{ base_url }}/{{ author.img }}" alt="{{ author.name }}"></a>
+          {% endif %}
       {%- endfor -%}
       </span>
     </div>
