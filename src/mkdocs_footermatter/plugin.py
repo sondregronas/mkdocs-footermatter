@@ -20,8 +20,8 @@ class FootermatterPlugin(BasePlugin):
         ("locale", config_options.Type(str, default='')),
         ('author_map', config_options.Type(list, default=[])),
         ("separator_map", config_options.Type(str, default='|')),
-        ("default_contrib_img", config_options.Type(str, default='')),
-        ("default_contrib_url", config_options.Type(str, default='/')),
+        ("default_author_img", config_options.Type(str, default='https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')),
+        ("default_author_url", config_options.Type(str, default='/')),
     )
 
     def __init__(self):
@@ -55,7 +55,7 @@ class FootermatterPlugin(BasePlugin):
             if author in self.author_map:
                 context['footermatter_authors'] += [self.author_map.get(author)]
             else:
-                def_img, def_url = self.config.get('default_contrib_img'), self.config.get('default_contrib_url')
+                def_img, def_url = self.config.get('default_author_img'), self.config.get('default_author_url')
                 context['footermatter_authors'] += [Author(author, def_img, def_url)]
         context['footermatter_created'] = timeago.format(c, now, locale)
         context['footermatter_updated'] = timeago.format(u, now, locale)
