@@ -56,7 +56,7 @@ updated: 2022-08-13 12:18:05
 - `date_format` What format to use for the dates, see below for options. Default: `timeago`
 
 **Author rendering options:**
-- `author_map` List of authors mapped image and url values: `name | img (path relative to "custom_dir") | url`
+- `author_map` List of authors mapped image and url values: `name | img (path relative to "custom_dir" or url) | url/website`
 - `separator_map` separator for `author_map`. Default `|`
 - `default_author_img` fallback image if missing from `author_map`. Default `https://ui-avatars.com` (See template for details)
 - `default_author_url` fallback url if missing from `author_map`. Default: `/`
