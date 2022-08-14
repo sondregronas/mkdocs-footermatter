@@ -21,8 +21,7 @@ class FootermatterPlugin(BasePlugin):
         ("date_format", config_options.Type(str, default='timeago')),
         ('author_map', config_options.Type(list, default=[])),
         ("separator_map", config_options.Type(str, default='|')),
-        ("default_author_img",
-         config_options.Type(str, default='https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')),
+        ("default_author_img", config_options.Type(str, default='https://ui-avatars.com')),
         ("default_author_url", config_options.Type(str, default='/')),
     )
 
@@ -40,13 +39,14 @@ class FootermatterPlugin(BasePlugin):
     def on_page_context(self, context, page, **kwargs):
         """Generate context values for the template, but only if all values exist"""
         authors, created, updated = self.get_frontmatter_keys(page)
-        if authors and created and updated:
-            context['footermatter_authors'] = [self.get_author(a) for a in authors]
-            context['footermatter_created'] = self.format_date(created)
-            context['footermatter_updated'] = self.format_date(updated)
+        context['footermatter_authors'] = [self.get_author(a) for a in authors]
+        context['footermatter_created'] = self.format_date(created)
+        context['footermatter_updated'] = self.format_date(updated)
         return context
 
+    ###
     # Util functions
+    ###
     def get_locale(self, config: config_options.Config) -> str:
         """Returns the locale in the given priority (specified, theme language, theme locale, en)"""
         return self.config.get('locale') \
@@ -56,9 +56,9 @@ class FootermatterPlugin(BasePlugin):
 
     def get_author(self, author) -> Author:
         """Returns either a defined author from author_map, or creates a new one using default values"""
-        return self.author_map.get(author,
-                                   Author(author, self.config.get('default_author_img'),
-                                          self.config.get('default_author_url')))
+        if author not in self.author_map:
+            return Author(author, self.config.get('default_author_img'), self.config.get('default_author_url'))
+        return self.author_map.get(author)
 
     def get_frontmatter_keys(self, page) -> tuple:
         """Returns a tuple for the fronmatter values of authors, created and updated"""
@@ -71,6 +71,8 @@ class FootermatterPlugin(BasePlugin):
 
     def format_date(self, date):
         """Takes a date value and formats it to the given format"""
+        if date is None:
+            return
         df, locale = self.config.get('date_format'), self.config.get('locale')
         if df == 'timeago':
             return timeago.format(date, self.now, locale)
