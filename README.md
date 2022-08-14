@@ -1,5 +1,5 @@
 # mkdocs-footermatter (Work in progress..)
-A plug-in to extract `author`, `created` and `updated`data from the YAML fronmatter to be rendered in a footer template.
+A plug-in to extract `author`, `created` and `updated` data from the YAML fronmatter to be rendered in a footer template.
 
 There are no tests associated with this project (yet). Things may (*or may not*) break.
 
@@ -46,11 +46,15 @@ While there's not much customizability (in fact there is none), here is a list o
 - `key_authors` fronmatter syntax for authors. Default: `authors`
 - `key_created` frontmatter syntax for date created. Default: `created`
 - `key_updated` frontmatter syntax for date updated. Default: `updated`
-- `locale` ISO language code (derived from theme language/locale), fallbacks to `en`
+- `locale` [ISO language code]((https://github.com/hustcc/timeago/tree/master/src/timeago/locales)), fallbacks to theme language or `en` 
+- `date_format` What format to use for the dates. Default: `timeago` (Only `timeago` is implemented)
 - `author_map` List of authors with attribute values: `name | img (path relative to "custom_dir") | url`
 - `separator_map` separator for `author_map`. Default `|`
 - `default_author_img` fallback image if missing from `author_map`. Default `https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png`
 - `default_author_url` fallback url if missing from `author_map`. Default: `/`
+
+### Date formats
+- `timeago` - a readable, relative date format. Note: values is static and only changes after building your docs.
 
 ### Template
 ```html
