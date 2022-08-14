@@ -1,17 +1,21 @@
 # mkdocs-footermatter (Work in progress..)
-A plug-in to extract `author`, `created` and `updated` data from the YAML fronmatter to be rendered in a footer template.
+[![Build Status](https://img.shields.io/github/workflow/status/sondregronas/mkdocs-footermatter/CI)](https://github.com/sondregronas/mkdocs-footermatter/)
+[![GitHub latest commit](https://img.shields.io/github/last-commit/sondregronas/mkdocs-footermatter)](https://github.com/sondregronas/mkdocs-footermatter/commit/)
+[![AGPLv3 license](https://img.shields.io/github/license/sondregronas/mkdocs-footermatter)](https://www.gnu.org/licenses/agpl-3.0.en.html)
+[![codecov](https://codecov.io/gh/sondregronas/mkdocs-footermatter/branch/main/graph/badge.svg?token=N5IDI7Q4NZ)](https://codecov.io/gh/sondregronas/mkdocs-footermatter)
+[![Buymeacoffee](https://badgen.net/badge/icon/buymeacoffee?icon=buymeacoffee&label)](https://www.buymeacoffee.com/u92RMis)
 
-There are no tests associated with this project (yet). Things may (*or may not*) break.
+A plug-in to extract `authors`, `created` and `updated` data from the YAML fronmatter to be rendered in a footer template.
 
 ![img.png](img.png)
 
-Inspired by https://github.com/timvink/mkdocs-git-revision-date-localized-plugin and https://github.com/ojacques/mkdocs-git-committers-plugin-2, without the need of using git logs.
+Inspired by [git-revision-date-localized](https://github.com/timvink/mkdocs-git-revision-date-localized-plugin) and [mkdocs-git-committers-plugin](https://github.com/ojacques/mkdocs-git-committers-plugin-2), without the need of using git logs.
 
 This solves a problem I had when batch renaming every file inside a GitHub action which would overwrite the aforementioned logs. (Renaming `%20` to `-`)
 
-Can be used in conjunction with the Obsidian plug-in https://github.com/beaussan/update-time-on-edit-obsidian
+Can be used in conjunction with the Obsidian plug-in [update-time-on-edit-obsidian](https://github.com/beaussan/update-time-on-edit-obsidian)
 
-For now it is installed using `pip install git+https://github.com/sondregronas/mkdocs-footermatter@main`
+For now it is installed using `pip install git+https://github.com/sondregronas/mkdocs-footermatter@main`, might move it to PyPI later.
 
 ## Usage
 ```yaml
@@ -40,23 +44,29 @@ updated: 2022-08-13 12:18:05
 ## Config
 While there's not much customizability (in fact there is none), here is a list of the configuration options.
 
+**Fronmatter keys:**
 - `key_authors` fronmatter syntax for authors. Default: `authors`
 - `key_created` frontmatter syntax for date created. Default: `created`
 - `key_updated` frontmatter syntax for date updated. Default: `updated`
+
+**Locale & format:**
 - `locale` [ISO language code]((https://github.com/hustcc/timeago/tree/master/src/timeago/locales)), fallbacks to theme language or `en` 
 - `date_format` What format to use for the dates, see below for options. Default: `timeago`
-- `author_map` List of authors with attribute values: `name | img (path relative to "custom_dir") | url`
+
+**Author rendering options:**
+- `author_map` List of authors mapped image and url values: `name | img (path relative to "custom_dir") | url`
 - `separator_map` separator for `author_map`. Default `|`
 - `default_author_img` fallback image if missing from `author_map`. Default `https://ui-avatars.com` (See template for details)
 - `default_author_url` fallback url if missing from `author_map`. Default: `/`
 
 ### Date formats
+More to be added..
 - `timeago` - a readable, relative date format. Note: values is static and only changes after building your docs.
 
 ### Template
-An example setup can be seen in the `overrides` folder, including some css styling and an example `main.html`
+An example setup can be seen in the [overrides](https://github.com/sondregronas/mkdocs-footermatter/tree/main/overrides) folder, including some css styling and an example [main.html](https://github.com/sondregronas/mkdocs-footermatter/blob/main/overrides/main.html)
 
-Relevant attributes:
+Relevant context values:
 ```yaml
 {{ footermatter_updated }}
 {{ footermatter_created }}

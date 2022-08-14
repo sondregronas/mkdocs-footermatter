@@ -39,11 +39,9 @@ class FootermatterPlugin(BasePlugin):
     def on_page_context(self, context, page, **kwargs):
         """Generate context values for the template, but only if all values exist"""
         authors, created, updated = self.get_frontmatter_keys(page)
-        # Ensure frontmatter is valid and includes at least one value
-        if authors or created or updated:
-            context['footermatter_authors'] = [self.get_author(a) for a in authors]
-            context['footermatter_created'] = self.format_date(created)
-            context['footermatter_updated'] = self.format_date(updated)
+        context['footermatter_authors'] = [self.get_author(a) for a in authors] if authors else None
+        context['footermatter_created'] = self.format_date(created) if created else None
+        context['footermatter_updated'] = self.format_date(updated) if updated else None
         return context
 
     ###
@@ -76,9 +74,9 @@ class FootermatterPlugin(BasePlugin):
 
     def format_date(self, date):
         """Takes a date value and formats it to the given format"""
-        if date is None:
+        if date is None:  # pragma: no cover
             return
         df, locale = self.config.get('date_format'), self.config.get('locale')
         if df == 'timeago':
             return timeago.format(date, self.now, locale)
-        raise NotImplementedError(f'Dateformat not implemented ({df})')
+        raise NotImplementedError(f'Dateformat not implemented ({df})')  # pragma: no cover
