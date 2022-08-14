@@ -7,17 +7,19 @@
 
 A plug-in to extract `authors`, `created` and `updated` data from the YAML fronmatter to be rendered in a footer template.
 
+This solves a problem I had when batch renaming every file inside a GitHub action which would overwrite the aforementioned logs. (Renaming `%20` to `-`)
+
 ![img.png](img.png)
 
 Inspired by [git-revision-date-localized](https://github.com/timvink/mkdocs-git-revision-date-localized-plugin) and [mkdocs-git-committers-plugin](https://github.com/ojacques/mkdocs-git-committers-plugin-2), without the need of using git logs.
 
-This solves a problem I had when batch renaming every file inside a GitHub action which would overwrite the aforementioned logs. (Renaming `%20` to `-`)
+## Setup
+Install the plugin using pip:
 
-Can be used in conjunction with the Obsidian plug-in [update-time-on-edit-obsidian](https://github.com/beaussan/update-time-on-edit-obsidian)
+`pip install git+https://github.com/sondregronas/mkdocs-footermatter@main` (Note: might move the plugin to PyPI later.)
 
-For now it is installed using `pip install git+https://github.com/sondregronas/mkdocs-footermatter@main`, might move it to PyPI later.
+Activate the plugin in `mkdocs.yml`:
 
-## Usage
 ```yaml
 plugins:
   - search
@@ -26,24 +28,24 @@ plugins:
         - Firstname Lastname | assets/img/firstname.png | https://github.com/firstnamelastname
         - Author2 | <path from "custom_dir"> | htts://github.com/author2
 ```
+> **Note:** If you have no `plugins` entry in your config file yet, you'll likely also want to add the `search` plugin. MkDocs enables it by default if there is no `plugins` entry set, but now you have to enable it explicitly.
 
-### Example frontmatter
+### Usage
+Can be used in conjunction with the Obsidian plug-in [update-time-on-edit-obsidian](https://github.com/beaussan/update-time-on-edit-obsidian)
+
+Example frontmatter:
+
 ```markdown
 ---
-title: Homepage
-aliases: [Home,]
 authors:
   - Firstname Lastname
   - Author2
 created: 2022-04-09 08:52:19
 updated: 2022-08-13 12:18:05
 ---
-# Homepage
 ```
 
-## Config
-While there's not much customizability (in fact there is none), here is a list of the configuration options.
-
+## Configuration options
 **Fronmatter keys:**
 - `key_authors` fronmatter syntax for authors. Default: `authors`
 - `key_created` frontmatter syntax for date created. Default: `created`
@@ -59,11 +61,11 @@ While there's not much customizability (in fact there is none), here is a list o
 - `default_author_img` fallback image if missing from `author_map`. Default `https://ui-avatars.com` (See template for details)
 - `default_author_url` fallback url if missing from `author_map`. Default: `/`
 
-### Date formats
+## Date formats
 More to be added..
 - `timeago` - a readable, relative date format. Note: values is static and only changes after building your docs.
 
-### Template
+## Template
 An example setup can be seen in the [overrides](https://github.com/sondregronas/mkdocs-footermatter/tree/main/overrides) folder, including some css styling and an example [main.html](https://github.com/sondregronas/mkdocs-footermatter/blob/main/overrides/main.html)
 
 Relevant context values:
