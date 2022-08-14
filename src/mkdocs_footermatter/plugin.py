@@ -39,9 +39,11 @@ class FootermatterPlugin(BasePlugin):
     def on_page_context(self, context, page, **kwargs):
         """Generate context values for the template, but only if all values exist"""
         authors, created, updated = self.get_frontmatter_keys(page)
-        context['footermatter_authors'] = [self.get_author(a) for a in authors]
-        context['footermatter_created'] = self.format_date(created)
-        context['footermatter_updated'] = self.format_date(updated)
+        # Ensure frontmatter is valid and includes at least one value
+        if authors or created or updated:
+            context['footermatter_authors'] = [self.get_author(a) for a in authors]
+            context['footermatter_created'] = self.format_date(created)
+            context['footermatter_updated'] = self.format_date(updated)
         return context
 
     ###
@@ -49,10 +51,13 @@ class FootermatterPlugin(BasePlugin):
     ###
     def get_locale(self, config: config_options.Config) -> str:
         """Returns the locale in the given priority (specified, theme language, theme locale, en)"""
-        return self.config.get('locale') \
-               or config.get("theme")._vars.get("language") \
-               or config.get("theme")._vars.get("locale") \
-               or 'en'
+        if self.config.get('locale'):
+            return self.config.get('locale')
+        elif "theme" in config and "language" in config.get("theme"):
+            return config.get("theme")._vars.get("language")
+        elif "theme" in config and "locale" in config.get("theme"):
+            return config.get("theme")._vars.get("locale")
+        return 'en'
 
     def get_author(self, author) -> Author:
         """Returns either a defined author from author_map, or creates a new one using default values"""
