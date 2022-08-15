@@ -1,6 +1,7 @@
-# mkdocs-footermatter (Work in progress..)
+# mkdocs-footermatter (Working title)
 [![Build Status](https://img.shields.io/github/workflow/status/sondregronas/mkdocs-footermatter/CI)](https://github.com/sondregronas/mkdocs-footermatter/)
 [![GitHub latest commit](https://img.shields.io/github/last-commit/sondregronas/mkdocs-footermatter)](https://github.com/sondregronas/mkdocs-footermatter/commit/)
+[![PyPi](https://img.shields.io/pypi/v/mkdocs-footermatter)](https://pypi.org/project/mkdocs-footermatter/)
 [![AGPLv3 license](https://img.shields.io/github/license/sondregronas/mkdocs-footermatter)](https://www.gnu.org/licenses/agpl-3.0.en.html)
 [![codecov](https://codecov.io/gh/sondregronas/mkdocs-footermatter/branch/main/graph/badge.svg?token=N5IDI7Q4NZ)](https://codecov.io/gh/sondregronas/mkdocs-footermatter)
 [![Buymeacoffee](https://badgen.net/badge/icon/buymeacoffee?icon=buymeacoffee&label)](https://www.buymeacoffee.com/u92RMis)
@@ -16,7 +17,7 @@ Inspired by [git-revision-date-localized](https://github.com/timvink/mkdocs-git-
 ## Setup
 Install the plugin using pip:
 
-`pip install git+https://github.com/sondregronas/mkdocs-footermatter@main` (Note: might move the plugin to PyPI later.)
+`pip install mkdocs-footermatter`
 
 Activate the plugin in `mkdocs.yml`:
 
