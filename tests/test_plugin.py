@@ -38,7 +38,6 @@ def plugin():
     return plugin
 
 
-@pytest.mark.skip(reason='Unreliable, will look into this later')
 def test_locale(plugin):
     # Ensure specified locale works
     cfg = config_options.BaseConfigOption().default
@@ -48,12 +47,12 @@ def test_locale(plugin):
     # Ensure language from theme works
     cfg = {'theme': Vars({'language': 'nb'})}
     plugin.config['locale'] = None
-    assert plugin.get_locale(cfg) == 'nb_NO'
+    assert plugin.get_locale(cfg) == 'nb'
 
     # Ensure locale from theme works
     cfg = {'theme': Vars({'locale': 'nn'})}
     plugin.config['locale'] = None
-    assert plugin.get_locale(cfg) == 'nn_NO'
+    assert plugin.get_locale(cfg) == 'nn'
 
     # Ensure fallback locale works
     cfg = {'': ''}

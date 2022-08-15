@@ -53,7 +53,7 @@ updated: 2022-08-13 12:18:05
 
 **Locale & format:**
 - `locale` language format for date_format (some options may require this to be configured, see below) fallbacks to theme language (recommended) or `en` 
-- `date_format` What format to use for the dates, see below for options. Default: `timeago`
+- `date_format` What format to use for the dates, see below for options. Default: `date`
 
 **Author rendering options:**
 - `author_map` List of authors mapped image and url values: `name | img (path relative to "custom_dir" or url) | url/website`

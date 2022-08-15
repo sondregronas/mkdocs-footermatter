@@ -1,5 +1,4 @@
 import timeago
-import locale as locale_package
 from datetime import datetime
 from dateutil import parser
 from babel.dates import format_date
@@ -21,7 +20,7 @@ class FootermatterPlugin(BasePlugin):
         ('key_created', config_options.Type(str, default='created')),
         ('key_updated', config_options.Type(str, default='updated')),
         ("locale", config_options.Type(str, default='')),
-        ("date_format", config_options.Type(str, default='timeago')),
+        ("date_format", config_options.Type(str, default='date')),
         ('author_map', config_options.Type(list, default=[])),
         ("separator_map", config_options.Type(str, default='|')),
         ("default_author_img", config_options.Type(str, default='https://ui-avatars.com')),
@@ -55,21 +54,10 @@ class FootermatterPlugin(BasePlugin):
         if self.config.get('locale'):
             return self.config.get('locale')
         elif "theme" in config and "locale" in config.get("theme"):
-            return self.i18n_locale(config.get("theme")._vars.get("locale", fallback))
+            return config.get("theme")._vars.get("locale", fallback)
         elif "theme" in config and "language" in config.get("theme"):
-            return self.i18n_locale(config.get("theme")._vars.get("language", fallback))
+            return config.get("theme")._vars.get("language", fallback)
         return fallback
-
-    @staticmethod
-    def i18n_locale(val: str):
-        try:
-            locale_package.setlocale(locale_package.LC_ALL, val)
-            out = locale_package.getlocale()[0]
-            if len(out) == 2 or len(out) == 5:
-                return out
-        except TypeError:
-            pass
-        return val
 
     def get_author(self, author) -> Author:
         """Returns either a defined author from author_map, or creates a new one using default values"""
