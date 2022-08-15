@@ -50,7 +50,7 @@ class FootermatterPlugin(BasePlugin):
     ###
     # Util functions
     ###
-    def get_locale(self, config: config_options.Config, fallback='en') -> str | None:
+    def get_locale(self, config: config_options.Config, fallback='en'):
         """Returns the locale in the given priority (specified, theme language, theme locale, en)"""
         if self.config.get('locale'):
             return self.config.get('locale')
