@@ -15,7 +15,7 @@ setup(
     author_email='mail@sondregronas.com',
     license='AGPLv3',
     python_requires='>=3.6',
-    install_requires=['mkdocs>=1', 'timeago==1.0.15'],
+    install_requires=['mkdocs>=1', 'timeago==1.0.15', 'babel>=2.7.0'],
     tests_require=["pytest"],
     packages=find_packages("src"),
     package_dir={"": "src"},
