@@ -1,5 +1,7 @@
 import timeago
 from datetime import datetime
+from dateutil import parser
+from babel.dates import format_date
 
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
@@ -51,10 +53,10 @@ class FootermatterPlugin(BasePlugin):
         """Returns the locale in the given priority (specified, theme language, theme locale, en)"""
         if self.config.get('locale'):
             return self.config.get('locale')
-        elif "theme" in config and "language" in config.get("theme"):
-            return config.get("theme")._vars.get("language")
         elif "theme" in config and "locale" in config.get("theme"):
             return config.get("theme")._vars.get("locale")
+        elif "theme" in config and "language" in config.get("theme"):
+            return config.get("theme")._vars.get("language")
         return 'en'
 
     def get_author(self, author) -> Author:
@@ -76,7 +78,15 @@ class FootermatterPlugin(BasePlugin):
         """Takes a date value and formats it to the given format"""
         if date is None:  # pragma: no cover
             return
+
         df, locale = self.config.get('date_format'), self.config.get('locale')
-        if df == 'timeago':
-            return timeago.format(date, self.now, locale)
-        raise NotImplementedError(f'Dateformat not implemented ({df})')  # pragma: no cover
+        date = parser.parse(date) if isinstance(date, str) else date
+
+        options = {
+            'timeago': timeago.format(date, self.now, locale),
+            'date': format_date(date, format="long", locale=locale),
+            'datetime': " ".join([format_date(date, format="long", locale=locale), date.strftime('%H:%M:%S')]),
+        }
+
+        return options.get(df, date.strftime(df))
+

@@ -1,2 +1,4 @@
 mkdocs
+pytest
 timeago==1.0.15
+babel>=2.7.0

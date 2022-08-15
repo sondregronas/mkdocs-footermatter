@@ -92,3 +92,42 @@ def test_plugin(plugin):
     assert context_after.get('footermatter_authors') is not None
     assert context_after.get('footermatter_created') is None
     assert context_after.get('footermatter_updated') is None
+
+
+def test_formats(plugin):
+    # Date
+    plugin.config['date_format'] = 'date'
+    page = Page({'created': '2022-02-01 10:00'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == 'February 1, 2022'
+
+    page = Page({'created': '01 feb.22'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == 'February 1, 2022'
+
+    page = Page({'created': 'feb 1 2022'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == 'February 1, 2022'
+
+    # Datetime
+    plugin.config['date_format'] = 'datetime'
+    page = Page({'created': 'feb 1 2022'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == 'February 1, 2022 00:00:00'
+
+    plugin.config['locale'] = 'no'
+    page = Page({'created': '2022-02-01 12:00'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '1. februar 2022 12:00:00'
+
+    # Custom
+    plugin.config['locale'] = 'en'
+    plugin.config['date_format'] = '%H:%M:%S'
+    page = Page({'created': '2022-02-01 12:00'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '12:00:00'
+
+    plugin.config['date_format'] = '%y-%Y-%m-%M'
+    page = Page({'created': '2022-02-01 12:00'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '22-2022-02-00'
