@@ -44,14 +44,14 @@ def test_locale(plugin):
     assert plugin.get_locale(cfg) == 'test'
 
     # Ensure language from theme works
-    cfg = {'theme': Vars({'language': 'test1'})}
+    cfg = {'theme': Vars({'language': 'nb'})}
     plugin.config['locale'] = None
-    assert plugin.get_locale(cfg) == 'test1'
+    assert plugin.get_locale(cfg) == 'nb_NO'
 
     # Ensure locale from theme works
-    cfg = {'theme': Vars({'locale': 'test2'})}
+    cfg = {'theme': Vars({'locale': 'nn'})}
     plugin.config['locale'] = None
-    assert plugin.get_locale(cfg) == 'test2'
+    assert plugin.get_locale(cfg) == 'nn_NO'
 
     # Ensure fallback locale works
     cfg = {'': ''}
@@ -111,6 +111,7 @@ def test_formats(plugin):
 
     # Datetime
     plugin.config['date_format'] = 'datetime'
+    plugin.config['locale'] = 'en'
     page = Page({'created': 'feb 1 2022'})
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_created') == 'February 1, 2022 00:00:00'
@@ -119,6 +120,11 @@ def test_formats(plugin):
     page = Page({'created': '2022-02-01 12:00'})
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_created') == '1. februar 2022 12:00:00'
+
+    plugin.config['locale'] = 'en_US'
+    page = Page({'created': '2022-02-01 12:00'})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == 'February 1, 2022 12:00:00'
 
     # Custom
     plugin.config['locale'] = 'en'

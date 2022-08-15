@@ -1,4 +1,5 @@
 import timeago
+import locale as locale_package
 from datetime import datetime
 from dateutil import parser
 from babel.dates import format_date
@@ -33,7 +34,7 @@ class FootermatterPlugin(BasePlugin):
 
     def on_config(self, config: config_options.Config):
         """Define locale (from theme or specified) and authors from mkdocs.yml"""
-        self.config['locale'] = self.get_locale(config)
+        self.config['locale'] = str(self.get_locale(config))
         self.author_map = {name.strip(): Author(name.strip(), img.strip(), url.strip())
                            for name, img, url in [author.split(self.config['separator_map'])
                                                   for author in self.config['author_map']]}
@@ -49,15 +50,26 @@ class FootermatterPlugin(BasePlugin):
     ###
     # Util functions
     ###
-    def get_locale(self, config: config_options.Config) -> str:
+    def get_locale(self, config: config_options.Config, fallback='en') -> str | None:
         """Returns the locale in the given priority (specified, theme language, theme locale, en)"""
         if self.config.get('locale'):
             return self.config.get('locale')
         elif "theme" in config and "locale" in config.get("theme"):
-            return config.get("theme")._vars.get("locale")
+            return self.i18n_locale(config.get("theme")._vars.get("locale", fallback))
         elif "theme" in config and "language" in config.get("theme"):
-            return config.get("theme")._vars.get("language")
-        return 'en'
+            return self.i18n_locale(config.get("theme")._vars.get("language", fallback))
+        return fallback
+
+    @staticmethod
+    def i18n_locale(val: str):
+        try:
+            locale_package.setlocale(locale_package.LC_ALL, val)
+            out = locale_package.getlocale()[0]
+            if len(out) == 2 or len(out) == 5:
+                return out
+        except TypeError:
+            pass
+        return val
 
     def get_author(self, author) -> Author:
         """Returns either a defined author from author_map, or creates a new one using default values"""
@@ -89,4 +101,3 @@ class FootermatterPlugin(BasePlugin):
         }
 
         return options.get(df, date.strftime(df))
-
