@@ -69,6 +69,8 @@ class FootermatterPlugin(BasePlugin):
                 return out
         except TypeError:
             pass
+        except locale_package.Error:
+            pass
         return val
 
     def get_author(self, author) -> Author:
