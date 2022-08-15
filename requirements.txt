@@ -1,4 +1,4 @@
 mkdocs
 pytest
 babel>=2.7.0
-git+https://github.com/sondregronas/timeago@master
+timeago==1.0.15
