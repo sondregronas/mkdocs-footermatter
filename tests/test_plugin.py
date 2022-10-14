@@ -146,6 +146,14 @@ def test_formats(plugin):
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_created') == '2 years ago'
 
+    page = Page({'created': pendulum.now().subtract(weeks=2, seconds=1)})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '2 weeks ago'
+
+    page = Page({'created': pendulum.now().subtract(hours=4, seconds=1)})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '4 hours ago'
+
     page = Page({'created': pendulum.now().subtract(minutes=30, seconds=1)})
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_created') == '30 minutes ago'
