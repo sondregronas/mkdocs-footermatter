@@ -108,7 +108,7 @@ class FootermatterPlugin(BasePlugin):
 
         df, locale = self.config.get('date_format'), self.config.get('locale')
         date = parser.parse(date) if isinstance(date, str) else date
-        date = pendulum.instance(date)
+        date = pendulum.instance(date, tz=self.now.timezone)
 
         try:
             pendulum.set_locale(locale)
