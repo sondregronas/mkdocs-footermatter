@@ -62,11 +62,11 @@ updated: 2022-08-13 12:18:05
 - `default_author_url` fallback url if missing from `author_map`. Default: `/`
 
 ## Date formats
-Note: values are static and only changes when building your docs.
-- `timeago` (2 hours ago) - a readable, relative date format. **_Locale must be one of [timeago's locales](https://github.com/hustcc/timeago/tree/master/src/timeago/locales)_**, which might be limited for multilingual support.
-- `date` (January 1. 2022) - simple date format. Locale can be set by the theme for [multilingual pages support](https://github.com/ultrabug/mkdocs-static-i18n)
-- `datetime` (January 1. 2022 12:00:00) - same as date, but with added timestamp
-- For custom formats just pass [a valid strftime template](https://strftime.org/). Example: `%B %Y` = January 2022
+Note: values are static and only change when re-building your docs. All formats are localized using the [Pendulum](https://pendulum.eustace.io/) package
+- `timeago` (2 hours ago) - a readable, relative date format.
+- `date` (January 1. 2022) - simple date format (`LL`).
+- `datetime` (January 1. 2022 12:00 PM) - same as date, but with added timestamp (`LLL`)
+- For custom formats just pass [a valid pendulum string format](https://pendulum.eustace.io/docs/#tokens). Example: `MMMM YYYY` = January 2022
 
 ## Template
 An example setup can be seen in the [overrides](https://github.com/sondregronas/mkdocs-footermatter/tree/main/overrides) folder, including some css styling and an example [main.html](https://github.com/sondregronas/mkdocs-footermatter/blob/main/overrides/main.html)

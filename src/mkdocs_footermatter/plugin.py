@@ -1,10 +1,16 @@
-import timeago
-from datetime import datetime
-from dateutil import parser
-from babel.dates import format_date
+import pendulum
 
+from dateutil import parser
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
+
+# TODO: Add more aliases
+LOCALE_ALIASES = {
+    'nb_NO': 'nb',
+    'nb_NN': 'nn',
+    'no': 'nb',
+    'en_US': 'en'
+}
 
 
 class Author:
@@ -29,11 +35,14 @@ class FootermatterPlugin(BasePlugin):
 
     def __init__(self):
         self.author_map = {}
-        self.now = datetime.now()
+        self.now = pendulum.now()
 
     def on_config(self, config: config_options.Config):
         """Define locale (from theme or specified) and authors from mkdocs.yml"""
         self.config['locale'] = str(self.get_locale(config))
+        if self.config['locale'] in LOCALE_ALIASES.keys():  # pragma: no cover
+            self.config['locale'] = LOCALE_ALIASES.get(self.config['locale'])
+
         self.author_map = {name.strip(): Author(name.strip(), img.strip(), url.strip())
                            for name, img, url in [author.split(self.config['separator_map'])
                                                   for author in self.config['author_map']]}
@@ -81,11 +90,19 @@ class FootermatterPlugin(BasePlugin):
 
         df, locale = self.config.get('date_format'), self.config.get('locale')
         date = parser.parse(date) if isinstance(date, str) else date
+        date = pendulum.instance(date)
+
+        try:
+            pendulum.set_locale(locale)
+        except ValueError:  # pragma: no cover
+            print(f'[WARNING]: Locale for mkdocs-footermatter is invalid (Got: {locale})')
+            print(f'[WARNING]: Locale for mkdocs-footermatter is now set to \'en\'.')
+            pendulum.set_locale('en')
 
         options = {
-            'timeago': timeago.format(date, self.now, locale),
-            'date': format_date(date, format="long", locale=locale),
-            'datetime': " ".join([format_date(date, format="long", locale=locale), date.strftime('%H:%M:%S')]),
+            'timeago': (self.now - date).in_words(),
+            'date': date.format(fmt="LL"),
+            'datetime': date.format(fmt='LLL')
         }
 
-        return options.get(df, date.strftime(df))
+        return options.get(df, date.format(fmt=df))

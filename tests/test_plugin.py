@@ -1,5 +1,5 @@
 import pytest
-import datetime
+from pendulum import datetime
 
 from mkdocs_footermatter.plugin import FootermatterPlugin
 from mkdocs.config import config_options
@@ -61,7 +61,7 @@ def test_locale(plugin):
 
 
 def test_plugin(plugin):
-    page = Page({'authors': 'Test Author', 'created': datetime.date(2022, 1, 1), 'updated': datetime.date(2022, 1, 1)})
+    page = Page({'authors': 'Test Author', 'created': datetime(2022, 1, 1), 'updated': datetime(2022, 1, 1)})
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_authors') is not None
     assert context_after.get('footermatter_authors')[0].name == 'Test Author'
@@ -82,7 +82,7 @@ def test_plugin(plugin):
     assert context_after.get('footermatter_created') is None
     assert context_after.get('footermatter_updated') is None
 
-    page = Page({'created': datetime.date(2022, 1, 1), 'updated': datetime.date(2022, 1, 1)})
+    page = Page({'created': datetime(2022, 1, 1), 'updated': datetime(2022, 1, 1)})
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_authors') is None
     assert context_after.get('footermatter_created') is not None
@@ -115,26 +115,26 @@ def test_formats(plugin):
     plugin.config['locale'] = 'en'
     page = Page({'created': 'feb 1 2022'})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == 'February 1, 2022 00:00:00'
+    assert context_after.get('footermatter_created') == 'February 1, 2022 12:00 AM'
 
-    plugin.config['locale'] = 'no'
+    plugin.config['locale'] = 'nb'
     page = Page({'created': '2022-02-01 12:00'})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == '1. februar 2022 12:00:00'
+    assert context_after.get('footermatter_created') == '1. februar 2022 12:00'
 
-    plugin.config['locale'] = 'en_US'
+    plugin.config['locale'] = 'en'
     page = Page({'created': '2022-02-01 12:00'})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == 'February 1, 2022 12:00:00'
+    assert context_after.get('footermatter_created') == 'February 1, 2022 12:00 PM'
 
     # Custom
     plugin.config['locale'] = 'en'
-    plugin.config['date_format'] = '%H:%M:%S'
+    plugin.config['date_format'] = 'HH:mm:ss'
     page = Page({'created': '2022-02-01 12:00'})
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_created') == '12:00:00'
 
-    plugin.config['date_format'] = '%y-%Y-%m-%M'
-    page = Page({'created': '2022-02-01 12:00'})
+    plugin.config['date_format'] = 'YY-YYYY-MM-mm'
+    page = Page({'created': '2022-02-01 12:30'})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == '22-2022-02-00'
+    assert context_after.get('footermatter_created') == '22-2022-02-30'
