@@ -144,24 +144,28 @@ def test_formats(plugin):
     plugin.config['date_format'] = 'timeago'
     page = Page({'created': pendulum.now().subtract(months=30, seconds=1)})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == '2 years ago'
+    assert context_after.get('footermatter_created') == '2 years'
+
+    page = Page({'created': pendulum.now().subtract(months=8, seconds=1)})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '8 months'
 
     page = Page({'created': pendulum.now().subtract(weeks=2, seconds=1)})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == '2 weeks ago'
+    assert context_after.get('footermatter_created') == '2 weeks'
 
     page = Page({'created': pendulum.now().subtract(hours=4, seconds=1)})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == '4 hours ago'
+    assert context_after.get('footermatter_created') == '4 hours'
 
     page = Page({'created': pendulum.now().subtract(minutes=30, seconds=1)})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == '30 minutes ago'
+    assert context_after.get('footermatter_created') == '30 minutes'
 
     page = Page({'created': pendulum.now().subtract(days=2, seconds=1)})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == '2 days ago'
+    assert context_after.get('footermatter_created') == '2 days'
 
     page = Page({'created': pendulum.now().subtract(seconds=5)})
     context_after = plugin.on_page_context({}, page)
-    assert context_after.get('footermatter_created') == 'a few seconds ago'
+    assert context_after.get('footermatter_created') == 'a few seconds'

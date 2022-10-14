@@ -27,6 +27,7 @@ class FootermatterPlugin(BasePlugin):
         ('key_updated', config_options.Type(str, default='updated')),
         ("locale", config_options.Type(str, default='')),
         ("date_format", config_options.Type(str, default='date')),
+        ('timeago_absolute', config_options.Type(bool, default=True)),
         ('author_map', config_options.Type(list, default=[])),
         ("separator_map", config_options.Type(str, default='|')),
         ("default_author_img", config_options.Type(str, default='https://ui-avatars.com')),
@@ -84,19 +85,20 @@ class FootermatterPlugin(BasePlugin):
         return authors, created, updated
 
     def format_timeago(self, diff) -> str:
+        abslt = self.config.get('timeago_absolute')
         if diff.years:
-            return self.now.subtract(years=diff.years).diff_for_humans()
+            return self.now.subtract(years=diff.years).diff_for_humans(absolute=abslt)
         if diff.months:
-            return self.now.subtract(months=diff.months).diff_for_humans()
+            return self.now.subtract(months=diff.months).diff_for_humans(absolute=abslt)
         if diff.weeks:
-            return self.now.subtract(weeks=diff.weeks).diff_for_humans()
+            return self.now.subtract(weeks=diff.weeks).diff_for_humans(absolute=abslt)
         if diff.days:
-            return self.now.subtract(days=diff.days).diff_for_humans()
+            return self.now.subtract(days=diff.days).diff_for_humans(absolute=abslt)
         if diff.hours:
-            return self.now.subtract(hours=diff.hours).diff_for_humans()
+            return self.now.subtract(hours=diff.hours).diff_for_humans(absolute=abslt)
         if diff.minutes:
-            return self.now.subtract(minutes=diff.minutes).diff_for_humans()
-        return self.now.subtract(seconds=diff.seconds).diff_for_humans()
+            return self.now.subtract(minutes=diff.minutes).diff_for_humans(absolute=abslt)
+        return self.now.subtract(seconds=diff.seconds).diff_for_humans(absolute=abslt)
 
 
     def format_date(self, date):

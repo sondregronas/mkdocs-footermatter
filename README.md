@@ -54,6 +54,7 @@ updated: 2022-08-13 12:18:05
 **Locale & format:**
 - `locale` language format for date_format (some options may require this to be configured, see below) fallbacks to theme language (recommended) or `en` 
 - `date_format` What format to use for the dates, see below for options. Default: `date`
+- `timeago_absolute` Boolean to omit the `ago` text. True: `2 days`, False: `2 days ago`. Default: `True`
 
 **Author rendering options:**
 - `author_map` List of authors mapped image and url values: `name | img (path relative to "custom_dir" or url) | url/website`
