@@ -1,4 +1,5 @@
 import pytest
+import pendulum
 from pendulum import datetime
 
 from mkdocs_footermatter.plugin import FootermatterPlugin
@@ -138,3 +139,21 @@ def test_formats(plugin):
     page = Page({'created': '2022-02-01 12:30'})
     context_after = plugin.on_page_context({}, page)
     assert context_after.get('footermatter_created') == '22-2022-02-30'
+
+    # Timeago
+    plugin.config['date_format'] = 'timeago'
+    page = Page({'created': pendulum.now().subtract(months=30, seconds=1)})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '2 years ago'
+
+    page = Page({'created': pendulum.now().subtract(minutes=30, seconds=1)})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '30 minutes ago'
+
+    page = Page({'created': pendulum.now().subtract(days=2, seconds=1)})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == '2 days ago'
+
+    page = Page({'created': pendulum.now().subtract(seconds=5)})
+    context_after = plugin.on_page_context({}, page)
+    assert context_after.get('footermatter_created') == 'a few seconds ago'

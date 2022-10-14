@@ -83,6 +83,22 @@ class FootermatterPlugin(BasePlugin):
         updated = page.meta.get(self.config.get("key_updated"))
         return authors, created, updated
 
+    def format_timeago(self, diff) -> str:
+        if diff.years:
+            return self.now.subtract(years=diff.years).diff_for_humans()
+        if diff.months:
+            return self.now.subtract(months=diff.months).diff_for_humans()
+        if diff.weeks:
+            return self.now.subtract(weeks=diff.weeks).diff_for_humans()
+        if diff.days:
+            return self.now.subtract(days=diff.days).diff_for_humans()
+        if diff.hours:
+            return self.now.subtract(hours=diff.hours).diff_for_humans()
+        if diff.minutes:
+            return self.now.subtract(minutes=diff.minutes).diff_for_humans()
+        return self.now.subtract(seconds=diff.seconds).diff_for_humans()
+
+
     def format_date(self, date):
         """Takes a date value and formats it to the given format"""
         if date is None:  # pragma: no cover
@@ -100,7 +116,7 @@ class FootermatterPlugin(BasePlugin):
             pendulum.set_locale('en')
 
         options = {
-            'timeago': (self.now - date).in_words(),
+            'timeago': self.format_timeago(self.now - date),
             'date': date.format(fmt="LL"),
             'datetime': date.format(fmt='LLL')
         }

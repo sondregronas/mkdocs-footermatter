@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='mkdocs-footermatter',
-    version='1.1.0',
+    version='1.2.0',
     description="A plugin to extract authors, created date and updated date from YAML frontmatter",
     long_description=long_description,
     long_description_content_type="text/markdown",
