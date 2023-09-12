@@ -31,9 +31,7 @@ jobs:
         pip install build
 
     - name: Update version in pyproject.toml
-      run: |
-        export TAG_NAME=$(echo $GITHUB_REF | cut -d / -f 3)
-        sed -i "s/0\.0\.0/${{ TAG_NAME }}/g" pyproject.toml
+      run: sed -i "s/0\.0\.0/$GITHUB_REF | cut -d / -f 3/g" pyproject.toml
 
     - name: Build package
       run: python -m build
