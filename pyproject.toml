@@ -47,4 +47,3 @@ tests = [
 footermatter = "mkdocs_footermatter.plugin:FootermatterPlugin"
 
 [tool.setuptools_scm]
-git_describe_command = "git describe --tags --abbrev=0"
