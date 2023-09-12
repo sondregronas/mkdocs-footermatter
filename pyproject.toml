@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mkdocs-footermatter"
-version = "1.3.2"
+version = "{{VERSION_PLACEHOLDER}}"
 keywords = ["mkdocs", "markdown", "footer", "author", "edited", "created", "frontmatter", "obsidian"]
 description = "A plugin to extract authors, created date and updated date from YAML frontmatter"
 readme = "README.md"
