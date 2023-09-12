@@ -1,5 +1,5 @@
 # mkdocs-footermatter (Working title)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/sondregronas/mkdocs-footermatter/CI)](https://github.com/sondregronas/mkdocs-footermatter/)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/sondregronas/mkdocs-footermatter/CI.yml?branch=main)](https://github.com/sondregronas/mkdocs-footermatter/)
 [![GitHub latest commit](https://img.shields.io/github/last-commit/sondregronas/mkdocs-footermatter)](https://github.com/sondregronas/mkdocs-footermatter/commit/)
 [![PyPi](https://img.shields.io/pypi/v/mkdocs-footermatter)](https://pypi.org/project/mkdocs-footermatter/)
 ![MIT license](https://img.shields.io/github/license/sondregronas/mkdocs-footermatter)
