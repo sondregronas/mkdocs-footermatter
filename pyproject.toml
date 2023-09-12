@@ -45,3 +45,6 @@ tests = [
 
 [project.entry-points."mkdocs.plugins"]
 footermatter = "mkdocs_footermatter.plugin:FootermatterPlugin"
+
+[tool.dynamic]
+version = { command = "git", args = ["describe", "--tags", "--abbrev=0"] }
