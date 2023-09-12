@@ -46,4 +46,6 @@ tests = [
 [project.entry-points."mkdocs.plugins"]
 footermatter = "mkdocs_footermatter.plugin:FootermatterPlugin"
 
-[tool.setuptools_scm]
+[tool.poetry.dynamic.version]
+source = "git-tag"
+prefix = "v"
