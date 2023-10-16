@@ -29,8 +29,8 @@ classifiers = [
 
 dependencies = [
     "mkdocs>=1",
-    "pendulum==2.1.2",
-    "setuptools"
+    "setuptools",
+    "pendulum",
 ]
 
 [project.urls]
