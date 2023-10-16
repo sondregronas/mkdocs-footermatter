@@ -1,3 +1,4 @@
 mkdocs
 pytest
 pendulum==2.1.2
+setuptools
