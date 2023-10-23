@@ -1,4 +1,3 @@
 mkdocs
 pytest
 pendulum
-setuptools
